@@ -16,8 +16,11 @@
 package com.example.android.quakereport;
 
 import android.app.LoaderManager.LoaderCallbacks;
+import android.content.Context;
 import android.content.Intent;
 import android.content.Loader;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -34,8 +37,9 @@ public class EarthquakeActivity extends AppCompatActivity implements LoaderCallb
     private static final String LOG_TAG = EarthquakeActivity.class.getName();
 
     private static final int EARTHQUAKE_LOADER_ID = 1;
-
     private TextView mEmptyListTextView;
+
+    private ConnectivityManager mConnectivityManager;
 
     /** URL for earthquake data from the USGS dataset */
     private static final String USGS_REQUEST_URL =
@@ -48,6 +52,9 @@ public class EarthquakeActivity extends AppCompatActivity implements LoaderCallb
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.earthquake_activity);
+
+        mConnectivityManager = (ConnectivityManager)
+                getSystemService(Context.CONNECTIVITY_SERVICE);
 
         // Find a reference to the {@link ListView} in the layout
         ListView earthquakeListView = (ListView) findViewById(R.id.list);
@@ -82,7 +89,19 @@ public class EarthquakeActivity extends AppCompatActivity implements LoaderCallb
             }
         });
 
-        getLoaderManager().initLoader(EARTHQUAKE_LOADER_ID, null, this);
+        if (!isConnected()) {
+            mEmptyListTextView.setText(getString(R.string.no_connection));
+            ProgressBar loadingSpinner = (ProgressBar) findViewById(R.id.loading_spinner);
+            assert loadingSpinner != null;
+            loadingSpinner.setVisibility(View.GONE);
+        } else {
+            getLoaderManager().initLoader(EARTHQUAKE_LOADER_ID, null, this);
+        }
+    }
+
+    private boolean isConnected() {
+        NetworkInfo networkInfo = mConnectivityManager.getActiveNetworkInfo();
+        return networkInfo != null && networkInfo.isConnected();
     }
 
     @Override
@@ -99,6 +118,10 @@ public class EarthquakeActivity extends AppCompatActivity implements LoaderCallb
         loadingSpinner.setVisibility(View.GONE);
 
         mEmptyListTextView.setText(getString(R.string.empty_list));
+
+        if (!isConnected()) {
+            mEmptyListTextView.setText(getString(R.string.no_connection));
+        }
 
         // If there is a valid list of {@link Earthquake}s, then add them to the adapter's
         // data set. This will trigger the ListView to update.

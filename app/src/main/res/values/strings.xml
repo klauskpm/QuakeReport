@@ -21,4 +21,5 @@
          if no specific kilometer distance from the primary location is given [CHAR LIMIT=30] -->
     <string name="near_the">Near the</string>
     <string name="empty_list">There is no earthquake</string>
+    <string name="no_connection">There is no connection</string>
 </resources>
