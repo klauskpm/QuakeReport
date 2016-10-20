@@ -24,6 +24,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
+import android.widget.TextView;
 
 import java.util.ArrayList;
 
@@ -32,6 +33,8 @@ public class EarthquakeActivity extends AppCompatActivity implements LoaderCallb
     private static final String LOG_TAG = EarthquakeActivity.class.getName();
 
     private static final int EARTHQUAKE_LOADER_ID = 1;
+
+    private TextView mEmptyListTextView;
 
     /** URL for earthquake data from the USGS dataset */
     private static final String USGS_REQUEST_URL =
@@ -47,6 +50,10 @@ public class EarthquakeActivity extends AppCompatActivity implements LoaderCallb
 
         // Find a reference to the {@link ListView} in the layout
         ListView earthquakeListView = (ListView) findViewById(R.id.list);
+
+        mEmptyListTextView = (TextView) findViewById(R.id.empty_list_item);
+
+        earthquakeListView.setEmptyView(mEmptyListTextView);
 
         // Create a new adapter that takes an empty list of earthquakes as input
         mAdapter = new EarthquakeAdapter(this, new ArrayList<Earthquake>());
@@ -90,6 +97,9 @@ public class EarthquakeActivity extends AppCompatActivity implements LoaderCallb
         // data set. This will trigger the ListView to update.
         if (data != null && !data.isEmpty()) {
             mAdapter.addAll(data);
+            mEmptyListTextView.setText("");
+        } else {
+            mEmptyListTextView.setText(getString(R.string.empty_list));
         }
     }
 

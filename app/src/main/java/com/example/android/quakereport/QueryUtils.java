@@ -64,10 +64,7 @@ public final class QueryUtils {
         }
 
         // Extract relevant fields from the JSON response and create a list of {@link Earthquake}s
-        ArrayList<Earthquake> earthquakes = extractFeatureFromJson(jsonResponse);
-
-        // Return the list of {@link Earthquake}s
-        return earthquakes;
+        return extractFeatureFromJson(jsonResponse);
     }
 
     /**
