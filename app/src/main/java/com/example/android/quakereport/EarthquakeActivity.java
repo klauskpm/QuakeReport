@@ -24,6 +24,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import java.util.ArrayList;
@@ -52,7 +53,7 @@ public class EarthquakeActivity extends AppCompatActivity implements LoaderCallb
         ListView earthquakeListView = (ListView) findViewById(R.id.list);
 
         mEmptyListTextView = (TextView) findViewById(R.id.empty_list_item);
-
+        assert earthquakeListView != null;
         earthquakeListView.setEmptyView(mEmptyListTextView);
 
         // Create a new adapter that takes an empty list of earthquakes as input
@@ -93,13 +94,16 @@ public class EarthquakeActivity extends AppCompatActivity implements LoaderCallb
     public void onLoadFinished(android.content.Loader<ArrayList<Earthquake>> loader, ArrayList<Earthquake> data) {
         mAdapter.clear();
 
+        ProgressBar loadingSpinner = (ProgressBar) findViewById(R.id.loading_spinner);
+        assert loadingSpinner != null;
+        loadingSpinner.setVisibility(View.GONE);
+
+        mEmptyListTextView.setText(getString(R.string.empty_list));
+
         // If there is a valid list of {@link Earthquake}s, then add them to the adapter's
         // data set. This will trigger the ListView to update.
         if (data != null && !data.isEmpty()) {
             mAdapter.addAll(data);
-            mEmptyListTextView.setText("");
-        } else {
-            mEmptyListTextView.setText(getString(R.string.empty_list));
         }
     }
 
