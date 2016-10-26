@@ -1,4 +1,5 @@
-<?xml version="1.0" encoding="utf-8"?><!-- Copyright (C) 2016 The Android Open Source Project
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Copyright (C) 2016 The Android Open Source Project
 
      Licensed under the Apache License, Version 2.0 (the "License");
      you may not use this file except in compliance with the License.
@@ -19,6 +20,8 @@
     <!-- Default text to show with the earthquake location ("Near the Pacific-Antarctic Ridge")
          if no specific kilometer distance from the primary location is given [CHAR LIMIT=30] -->
     <string name="near_the">Near the</string>
+    <string name="empty_list">There is no earthquake</string>
+    <string name="no_connection">There is no connection</string>
 
     <!-- Settings Menu Item [CHAR LIMIT=NONE] -->
     <string name="settings_menu_item">Settings</string>
